@@ -40,72 +40,101 @@ class OnBordingScreen extends StatelessWidget {
                 ),
             ],
           ),
-          body: PageView.builder(
-            itemCount: OnBordingModel.onBordingList.length,
-            controller: controller.pageController,
-            onPageChanged: (index) {
-              context.read<OnBordingController>().changeIndex(index);
-            },
-            itemBuilder: (BuildContext context, int index) {
-              final model = OnBordingModel.onBordingList[index];
-              return SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 30,
-                    horizontal: 16,
-                  ),
-                  child: Column(
-                    children: [
-                      Image.asset(model.imagePath),
-                      SizedBox(height: 24),
-                      Text(
-                        model.title,
-                        style: TextStyle(
-                          color: Color(0xFF4E4B66),
-                          fontSize: 20,
-                          fontWeight: .w700,
-                        ),
-                      ),
-                      SizedBox(height: 12),
-                      Text(
-                        model.desc,
-                        textAlign: .center,
-                        style: TextStyle(
-                          color: Color(0xFF6E7191),
-                          fontSize: 16,
-                          fontWeight: .w400,
-                        ),
-                      ),
-                      Spacer(),
-                      Consumer<OnBordingController>(
-                        builder: (BuildContext context, value, Widget? child) {
-                          return ElevatedButton(
-                            onPressed: () {
-                              controller.pageController.nextPage(
-                                duration: Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              fixedSize: Size(
-                                MediaQuery.of(context).size.width,
-                                48,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.zero,
+
+          body: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+            child: Column(
+              children: [
+                Expanded(
+                  child: PageView.builder(
+                    itemCount: OnBordingModel.onBordingList.length,
+                    controller: controller.pageController,
+                    onPageChanged: (index) {
+                      context.read<OnBordingController>().changeIndex(index);
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      final model = OnBordingModel.onBordingList[index];
+                      return SafeArea(
+                        child: Column(
+                          children: [
+                            Image.asset(model.imagePath),
+                            SizedBox(height: 24),
+                            Text(
+                              model.title,
+                              style: TextStyle(
+                                color: Color(0xFF4E4B66),
+                                fontSize: 20,
+                                fontWeight: .w700,
                               ),
                             ),
-                            child: Text(
-                              (controller.isLastIndex) ? 'Get Started' : 'Next',
+                            SizedBox(height: 12),
+                            Text(
+                              model.desc,
+                              textAlign: .center,
+                              style: TextStyle(
+                                color: Color(0xFF6E7191),
+                                fontSize: 16,
+                                fontWeight: .w400,
+                              ),
                             ),
-                          );
-                        },
-                      ),
-                    ],
+
+                            // Spacer(),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
-              );
-            },
+
+                Consumer<OnBordingController>(
+                  builder: (BuildContext context, value, Widget? child) {
+                    return Row(
+                      mainAxisAlignment: .center,
+                      children: [
+                        ...List.generate(
+                          3,
+                          (index) => Container(
+                            height: 16,
+                            width: 16,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color(
+                                value.currentIndex == index
+                                    ? 0XffC53030
+                                    : 0xffD3D3D3,
+                              ),
+                              //#D3D3D3
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                SizedBox(height: 162),
+                Consumer<OnBordingController>(
+                  builder: (BuildContext context, value, Widget? child) {
+                    return ElevatedButton(
+                      onPressed: () {
+                        controller.pageController.nextPage(
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(MediaQuery.of(context).size.width, 48),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                        ),
+                      ),
+                      child: Text(
+                        (controller.isLastIndex) ? 'Get Started' : 'Next',
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
